@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@types/long": "^3.0.31",
+    "@types/node": "^8.0.14",
+    "@types/sinon": "^2.3.3",
+    "binarysearch": "^1.0.0",
+    "long": "^3.2.0",
+    "sinon": "^2.3.8",
+    "timeunit": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.1",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2",
+    "ts-node": "^3.2.1",
+    "typescript": "^2.4.2"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register test/*.ts"
+  }
+}

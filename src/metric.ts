@@ -1,0 +1,5 @@
+interface Metric {
+
+}
+
+export { Metric };
