@@ -8,3 +8,5 @@ interface Metered extends Metric, Counting {
     getMeanRate(): number;
     getOneMinuteRate(): number;
 }
+
+export { Metered };
