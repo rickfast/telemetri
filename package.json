@@ -2,17 +2,21 @@
   "dependencies": {
     "@types/long": "^3.0.31",
     "@types/node": "^8.0.14",
-    "@types/sinon": "^2.3.3",
     "binarysearch": "^1.0.0",
+    "js-range": "^1.0.0",
     "long": "^3.2.0",
-    "sinon": "^2.3.8",
     "timeunit": "^1.1.1"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
+    "@types/sinon": "^2.3.3",
     "chai": "^4.1.0",
     "mocha": "^3.4.2",
+    "mocha-sinon": "^2.0.0",
+    "sinon": "^2.3.8",
+    "sinon-chai": "^2.12.0",
+    "sleep": "^5.1.1",
     "ts-node": "^3.2.1",
     "typescript": "^2.4.2"
   },
