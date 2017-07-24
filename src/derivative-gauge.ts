@@ -1,7 +1,7 @@
 import { Gauge } from './gauge';
 
 abstract class DerivativeGauge<F, T> implements Gauge<T> {
-    protected constructor(private base: Gauge<F> ) {
+    constructor(private base: Gauge<F> ) {
         
     }
 
@@ -11,3 +11,5 @@ abstract class DerivativeGauge<F, T> implements Gauge<T> {
 
     protected abstract transform(value: F): T;
 }
+
+export { DerivativeGauge };
