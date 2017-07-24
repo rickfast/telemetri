@@ -1,7 +1,17 @@
 import { Metric } from './metric';
+import { MetricKind } from './metric-kind';
 
-interface Gauge<T> extends Metric {
-  getValue(): T;
+abstract class Gauge<T> implements Metric {
+  readonly kind = MetricKind.GAUGE;
+  abstract getValue(): T;
+
+  static forLambda<T>(getValue: () => T): Gauge<T> {
+    return new (class _Gauge extends Gauge<T> {
+      getValue(): T {
+        return getValue();
+      };
+    })()
+  }
 }
 
 export { Gauge };

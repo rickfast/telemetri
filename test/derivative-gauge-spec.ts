@@ -6,7 +6,7 @@ import { Gauge } from "../src/gauge";
 
 import * as timeunit from "timeunit";
 
-class InnerGauge implements Gauge<string> {
+class InnerGauge extends Gauge<string> {
   getValue(): string {
     return 'some-value';
   }

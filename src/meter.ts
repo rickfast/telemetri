@@ -3,6 +3,7 @@ import * as timeunit from "timeunit";
 import { defaultClock, Clock } from "./clock";
 import { Ewma } from "./ewma";
 import { Metered } from "./metered";
+import { MetricKind } from './metric-kind';
 
 const TICK_INTERVAL = timeunit.seconds.toNanos(5);
 
@@ -14,6 +15,8 @@ class Meter implements Metered {
   private count = 0;
   private startTime: number;
   private lastTick: number;
+
+  readonly kind = MetricKind.METER;
 
   constructor(private clock: Clock = defaultClock()) {
     this.clock = clock;

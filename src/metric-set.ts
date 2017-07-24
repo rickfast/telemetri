@@ -1,6 +1,6 @@
 import { Metric } from './metric';
 
-interface MetricSet extends Metric {
+interface MetricSet {
     [name: string]: Metric
 }
 

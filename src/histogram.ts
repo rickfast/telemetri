@@ -1,32 +1,34 @@
-import * as Long from 'long';
+import * as Long from "long";
 
-import { Metric } from './metric';
-import { Sampling } from './sampling';
-import { Counting } from './counting';
-import { Reservoir } from './reservoir';
-import { Snapshot } from './snapshot';
+import { Metric } from "./metric";
+import { MetricKind } from "./metric-kind";
+import { Sampling } from "./sampling";
+import { Counting } from "./counting";
+import { Reservoir } from "./reservoir";
+import { Snapshot } from "./snapshot";
 
 class Histogram implements Metric, Sampling, Counting {
-    
-    private count: Long;
+  private count: Long;
 
-    constructor(private reservoir: Reservoir) {
-        this.reservoir = reservoir;
-        this.count = Long.fromInt(0);
-    }
+  readonly kind = MetricKind.HISTOGRAM;
 
-    update(value: number): void {
-        this.count = this.count.add(1);
-        this.reservoir.update(value);
-    }
+  constructor(private reservoir: Reservoir) {
+    this.reservoir = reservoir;
+    this.count = Long.fromInt(0);
+  }
 
-    getCount(): number {
-        return this.count.toInt();
-    }
+  update(value: number): void {
+    this.count = this.count.add(1);
+    this.reservoir.update(value);
+  }
 
-    getSnapshot(): Snapshot {
-        return this.reservoir.getSnapshot();
-    }
+  getCount(): number {
+    return this.count.toInt();
+  }
+
+  getSnapshot(): Snapshot {
+    return this.reservoir.getSnapshot();
+  }
 }
 
 export { Histogram };

@@ -1,20 +1,23 @@
-import { Metric } from './metric';
-import { Counting } from './counting';
+import { Metric } from "./metric";
+import { MetricKind } from "./metric-kind";
+import { Counting } from "./counting";
 
 class Counter implements Metric, Counting {
-    private count = 0;
+  private count = 0;
 
-    inc(n: number = 1): void {
-        this.count += n;
-    }
+  readonly kind = MetricKind.COUNTER;
 
-    dec(n: number = 1): void {
-        this.count -= n;
-    }
+  inc(n: number = 1): void {
+    this.count += n;
+  }
 
-    getCount(): number {
-        return this.count;
-    }
+  dec(n: number = 1): void {
+    this.count -= n;
+  }
+
+  getCount(): number {
+    return this.count;
+  }
 }
 
 export { Counter };
