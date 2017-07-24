@@ -1,7 +1,7 @@
 import "mocha";
 import { expect } from "chai";
 
-import { CachedGauge } from "../src/cached-gauge";
+import { CachedGauge } from "../../src/core/cached-gauge";
 import * as timeunit from "timeunit";
 import * as sleep from "sleep";
 

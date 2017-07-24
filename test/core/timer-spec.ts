@@ -1,9 +1,9 @@
 import "mocha";
 import { expect } from "chai";
 
-import { Timer } from "../src/timer";
-import { UniformReservoir } from "../src/uniform-reservoir";
-import { Clock } from "../src/clock";
+import { Timer } from "../../src/core/timer";
+import { UniformReservoir } from "../../src/core/uniform-reservoir";
+import { Clock } from "../../src/core/clock";
 
 import * as timeunit from "timeunit";
 import * as sleep from 'sleep';
