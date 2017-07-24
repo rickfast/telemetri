@@ -33,6 +33,21 @@ abstract class Snapshot {
   get999thPercentile(): number {
     return this.getValue(0.999);
   }
+
+  toJson(): any {
+    return {
+      min: this.getMin(),
+      max: this.getMax(),
+      mean: this.getMean(),
+      stddev: this.getStdDev(),
+      median: this.getMedian(),
+      p75: this.get75thPercentile(),
+      p95: this.get95thPercentile(),
+      p98: this.get98thPercentile(),
+      p99: this.get99thPercentile(),
+      p999: this.get999thPercentile()
+    };
+  }
 }
 
 export { Snapshot };

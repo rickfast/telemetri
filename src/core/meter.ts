@@ -76,6 +76,15 @@ class Meter implements Metered {
     this.tickIfNecessary();
     return this.m1Rate.getRate(timeunit.seconds);
   }
+
+  toJson(): any {
+    return {
+      m1_rate: this.getOneMinuteRate(),
+      m5_rate: this.getFiveMinuteRate(),
+      m15_rate: this.getFifteenMinuteRate(),
+      mean_rate: this.getMeanRate()
+    };
+  }
 }
 
 export { Meter };

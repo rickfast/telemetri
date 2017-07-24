@@ -18,6 +18,12 @@ class Counter implements Metric, Counting {
   getCount(): number {
     return this.count;
   }
+
+  toJson(): any {
+    return {
+      count: this.count
+    };
+  }
 }
 
 export { Counter };

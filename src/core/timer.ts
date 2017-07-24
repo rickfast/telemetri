@@ -74,6 +74,13 @@ class Timer implements Metered, Sampling {
   getSnapshot(): Snapshot {
     return this.histogram.getSnapshot();
   }
+
+  toJson(): any {
+    return {
+      ...this.histogram,
+      ...this.meter
+    };
+  }
 }
 
 export { Timer };

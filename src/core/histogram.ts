@@ -8,27 +8,33 @@ import { Reservoir } from "./reservoir";
 import { Snapshot } from "./snapshot";
 
 class Histogram implements Metric, Sampling, Counting {
-  private count: Long;
+  private count = 0;
 
   readonly kind = MetricKind.HISTOGRAM;
 
   constructor(private reservoir: Reservoir) {
     this.reservoir = reservoir;
-    this.count = Long.fromInt(0);
   }
 
   update(value: number): void {
-    this.count = this.count.add(1);
+    this.count = this.count + 1;
     this.reservoir.update(value);
   }
 
   getCount(): number {
-    return this.count.toInt();
+    return this.count;
   }
 
   getSnapshot(): Snapshot {
     return this.reservoir.getSnapshot();
   }
+
+  toJson(): any {
+    return {
+      count: this.count,
+      ...this.getSnapshot()
+    }
+  };
 }
 
 export { Histogram };
