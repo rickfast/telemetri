@@ -1,6 +1,5 @@
 import "mocha";
 import { expect } from "chai";
-import * as Long from "long";
 import { spy } from "sinon";
 
 import { WeightedSample, WeightedSnapshot } from "../../src/core/weighted-snapshot";

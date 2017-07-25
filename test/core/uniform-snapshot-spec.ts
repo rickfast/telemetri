@@ -1,6 +1,5 @@
 import "mocha";
 import { expect } from "chai";
-import * as Long from "long";
 
 import { UniformSnapshot } from "../../src/core/uniform-snapshot";
 

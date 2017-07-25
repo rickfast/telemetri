@@ -1,5 +1,3 @@
-import * as Long from "long";
-
 import { Metric } from "./metric";
 import { MetricKind } from "./metric-kind";
 import { Sampling } from "./sampling";

@@ -1,5 +1,4 @@
 import { Snapshot } from "./snapshot";
-import * as Long from "long";
 import * as stream from "stream";
 
 interface WeightedSample {
