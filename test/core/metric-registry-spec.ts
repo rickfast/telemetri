@@ -7,7 +7,7 @@ import { defaultRegistry } from "../../src/index";
 import * as timeunit from "../../src/core/time";
 
 describe("MetricRegistry", () => {
-  it.only("collects metrics", () => {
+  it("collects metrics", () => {
     const reporter = new ConsoleReporter(defaultRegistry);
 
     defaultRegistry.register("one.gauge", () => 1.0);

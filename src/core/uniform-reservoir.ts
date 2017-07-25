@@ -2,7 +2,6 @@ import { Reservoir } from './reservoir';
 import { Snapshot } from './snapshot';
 import { UniformSnapshot } from './uniform-snapshot';
 
-import * as Long from 'long';
 import * as range from 'js-range';
 
 const DEFAULT_SIZE = 1028;

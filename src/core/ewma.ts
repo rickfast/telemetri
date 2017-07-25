@@ -1,7 +1,5 @@
 import * as timeunit from "./time";
 
-import * as Long from "long";
-
 const INTERVAL = 5;
 const SECONDS_PER_MINUTE = 60.0;
 const ONE_MINUTE = 1;
@@ -16,7 +14,7 @@ class Ewma {
   private initialized = false;
   private rate = 0.0;
 
-  private uncounted: Long = Long.fromInt(0);
+  private uncounted = 0;
   private alpha: number;
   private interval: number;
 
@@ -38,13 +36,13 @@ class Ewma {
   }
 
   update(n: number): void {
-    this.uncounted = this.uncounted.add(n);
+    this.uncounted = this.uncounted + n;
   }
 
   tick(): void {
-    const count = this.uncounted.toInt();
+    const count = this.uncounted;
     
-    this.uncounted = Long.fromInt(0);
+    this.uncounted = 0;
 
     const instantRate = count / this.interval;
     
