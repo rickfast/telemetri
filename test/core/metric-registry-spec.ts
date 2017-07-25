@@ -7,7 +7,7 @@ import { defaultRegistry } from "../../src/index";
 import * as timeunit from "../../src/core/time";
 
 describe("MetricRegistry", () => {
-  it("collects metrics", () => {
+  it.only("collects metrics", () => {
     const reporter = new ConsoleReporter(defaultRegistry);
 
     defaultRegistry.register("one.gauge", () => 1.0);
@@ -25,6 +25,14 @@ describe("MetricRegistry", () => {
     histogram.update(3);
     histogram.update(4);
     histogram.update(5);
+
+    const timer = defaultRegistry.timer('a.timer');
+
+    timer.time().stop();
+
+    const timers = defaultRegistry.getTimers();
+
+    expect(timers['a.timer'].getCount()).to.eq(1);
 
     const counters = defaultRegistry.getCounters();
 

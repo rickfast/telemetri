@@ -7,7 +7,7 @@ import { Timer } from "./timer";
 import { ALL, MetricFilter } from "./metric-filter";
 import { MetricKind } from "./metric-kind";
 import { MetricSet } from "./metric-set";
-import { MetricBuilder, COUNTERS, HISTOGRAMS, METERS } from "./metric-builder";
+import { MetricBuilder, COUNTERS, HISTOGRAMS, METERS, TIMERS } from "./metric-builder";
 
 interface Metrics {
   [name: string]: Metric;
@@ -46,6 +46,15 @@ class MetricRegistry {
     return metric;
   }
 
+  gauge(name: string, gauge: Gauge<any> | GaugeLambda): Gauge<any> {
+    if (typeof gauge === 'function') {
+      const wrapped = Gauge.forLambda<any>(gauge);
+      return this.getOrAdd(name, new MetricBuilder(MetricKind.GAUGE, () => wrapped));
+    } else {
+      return this.getOrAdd(name, new MetricBuilder(MetricKind.GAUGE, () => gauge))
+    }
+  }
+
   counter(name: string): Counter {
     return this.getOrAdd(name, COUNTERS);
   }
@@ -56,6 +65,10 @@ class MetricRegistry {
 
   meter(name: string): Meter {
     return this.getOrAdd(name, METERS);
+  }
+
+  timer(name: string): Timer {
+    return this.getOrAdd(name, TIMERS);
   }
 
   private putIfAbsent(name: string, metric: Metric): Metric | null {
@@ -149,4 +162,4 @@ class MetricRegistry {
   }
 }
 
-export { MetricRegistry };
+export { MetricRegistry, GaugeLambda, Metrics, MetricMap };

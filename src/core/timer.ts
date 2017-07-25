@@ -9,7 +9,6 @@ import { Snapshot } from "./snapshot";
 import { ExponentiallyDecayingReservoir } from "./exponentially-decaying-reservoir";
 import * as timeunit from "./time";
 
-
 class TimeContext {
   private startTime: number;
 
@@ -28,7 +27,7 @@ class Timer implements Metered, Sampling {
   private meter: Meter;
   private histogram: Histogram;
   
-  readonly kind: MetricKind;
+  readonly kind = MetricKind.TIMER;
 
   constructor(
     reservoir: Reservoir = new ExponentiallyDecayingReservoir(),
@@ -77,10 +76,10 @@ class Timer implements Metered, Sampling {
 
   toJson(): any {
     return {
-      ...this.histogram,
-      ...this.meter
+      ...this.histogram.toJson(),
+      ...this.meter.toJson()
     };
   }
 }
 
-export { Timer };
+export { TimeContext, Timer };

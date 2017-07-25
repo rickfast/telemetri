@@ -1,4 +1,13 @@
 language: node_js
 node_js:
-  - 8
+- 8
 script: yarn run test
+deploy:
+  on:
+    tags: true
+  provider: npm
+  email: rick.t.fast@gmail.com
+  api_key: $NPM_TOKEN
+env:
+  global:
+    secure: S4H/cy8SrCU8gsAshpvatuqm6Vdike3GGFlj/scCFr0bpN1hw1kNoo4uJcHn0EnxJxRhILr6l9Q77TqqSEdeoCdzvqX1wi7fgXHihYgI2frhTiFS/q0GLcprTL00GhvZfb0zFeUOwEeK3jSPSKoUMEll+q/7gx8lfIU9eDEhSyQTmjGUi+A7pvBkqPDhrhtpzq0gbHh5czUH4ZjFdDsMWMFL27V2mlyMJ/SfHN9uUF77nuOmkyc5BgKDbS0kJtiwLRaQFIEoWExWWEgx5REHi54uKwW428HCwCTW9grcv2wEIhhAxFbNzAVtE9xXUUvriFJsGsME4+LZld4NEsIw6jMU9ZxmwyDj1GIeFXNQSxYOY91t064xz7TxNbkvKt16+KRabg4/HJPX0UIFP8prD5XpnVBa1C939Epge16DrHjVFbVlYyV/zS1T6LRoJjn1UPopoHDmXdg2RHIT2x2QUCTnognspEvk2eUpLQr4RBtTJZfYajBKYjSk9sY5bWL2WdmE7QDoHckXPLhhIhph4uH1Y6HxK+sWnl0JFg3zquUbtkBFR8J2B+I3joQYU5u/ZMukOlBtKrsdQhpEa6jDWA/ecVbvDC8Tm4mqaM5An5yEImUg7ku3kEWXfBG6qOuJvDBT/ggIBeSnPsdNde75f0FM8dalkGPqO/9D8ORQVDw=

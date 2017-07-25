@@ -1,4 +1,10 @@
 {
+  "name": "telemetri",
+  "version": "0.0.1",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
   "dependencies": {
     "@types/node": "^8.0.14",
     "js-range": "^1.0.0",

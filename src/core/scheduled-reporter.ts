@@ -108,6 +108,8 @@ class ConsoleReporter extends ScheduledReporter {
       name => (result[name] = metrics[name].toJson())
     );
 
+    console.log(result);
+
     return result;
   }
 }

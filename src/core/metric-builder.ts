@@ -5,6 +5,7 @@ import { Meter } from "./meter";
 import { Metric } from "./metric";
 import { MetricKind } from "./metric-kind";
 import { ExponentiallyDecayingReservoir } from "./exponentially-decaying-reservoir";
+import { Timer } from "./timer";
 
 class MetricBuilder<T extends Metric> {
   constructor(private kind: MetricKind, private supplier: () => T) {}
@@ -27,5 +28,6 @@ const HISTOGRAMS = new MetricBuilder<Histogram>(
   () => new Histogram(new ExponentiallyDecayingReservoir())
 );
 const METERS = new MetricBuilder<Meter>(MetricKind.METER, () => new Meter());
+const TIMERS = new MetricBuilder<Timer>(MetricKind.TIMER, () => new Timer());
 
-export { MetricBuilder, COUNTERS, HISTOGRAMS, METERS };
+export { MetricBuilder, COUNTERS, HISTOGRAMS, METERS, TIMERS };
