@@ -1,6 +1,5 @@
 import "mocha";
 import { expect } from "chai";
-import * as Long from "long";
 
 import { Snapshot } from "../../src/core/snapshot";
 import { UniformReservoir } from "../../src/core/uniform-reservoir";
@@ -19,7 +18,7 @@ describe("UniformReservoir", () => {
       expect(snapshot.size()).to.eq(100);
 
       snapshot.getValues().forEach(value => {
-        expect(value).to.be.lessThan(1000).and.to.be.greaterThan(0);
+        expect(value).to.be.lessThan(1000).and.to.be.gte(0);
       });
     });
   });
