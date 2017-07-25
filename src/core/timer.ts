@@ -7,8 +7,8 @@ import { Histogram } from "./histogram";
 import { Reservoir } from "./reservoir";
 import { Snapshot } from "./snapshot";
 import { ExponentiallyDecayingReservoir } from "./exponentially-decaying-reservoir";
+import * as timeunit from "./time";
 
-import * as timeunit from "timeunit";
 
 class TimeContext {
   private startTime: number;
@@ -38,7 +38,7 @@ class Timer implements Metered, Sampling {
     this.histogram = new Histogram(reservoir);
   }
 
-  update(duration: number, unit: timeunit = timeunit.nanoseconds): void {
+  update(duration: number, unit: timeunit.TimeUnit = timeunit.nanoseconds): void {
     const dur = unit.toNanos(duration);
 
     if (dur >= 0) {

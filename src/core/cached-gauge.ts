@@ -1,7 +1,9 @@
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 
 import { Gauge } from "./gauge";
 import { defaultClock, Clock } from "./clock";
+
+import { TimeUnit } from './time';
 
 abstract class CachedGauge<T> extends Gauge<T> {
   private reloadAt = 0;
@@ -10,7 +12,7 @@ abstract class CachedGauge<T> extends Gauge<T> {
 
   constructor(
     timeout: number,
-    timeoutUnit: timeunit,
+    timeoutUnit: TimeUnit,
     private clock: Clock = defaultClock()
   ) {
     super();

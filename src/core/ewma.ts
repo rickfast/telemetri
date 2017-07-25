@@ -1,4 +1,4 @@
-import * as timeunit from "timeunit";
+import * as timeunit from "./time";
 
 import * as Long from "long";
 

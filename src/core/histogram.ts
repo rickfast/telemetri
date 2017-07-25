@@ -32,7 +32,7 @@ class Histogram implements Metric, Sampling, Counting {
   toJson(): any {
     return {
       count: this.count,
-      ...this.getSnapshot()
+      ...this.getSnapshot().toJson()
     }
   };
 }

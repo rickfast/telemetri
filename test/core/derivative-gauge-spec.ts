@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { DerivativeGauge } from "../../src/core/derivative-gauge";
 import { Gauge } from "../../src/core/gauge";
 
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 
 class InnerGauge extends Gauge<string> {
   getValue(): string {

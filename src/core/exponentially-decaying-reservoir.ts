@@ -1,14 +1,4 @@
-// import java.util.ArrayList;
-// import java.util.concurrent.ConcurrentSkipListMap;
-// import java.util.concurrent.TimeUnit;
-// import java.util.concurrent.atomic.AtomicLong;
-// import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-// import static java.lang.Math.exp;
-// import static java.lang.Math.min;
-
-// import com.codahale.metrics.WeightedSnapshot.WeightedSample;
-import * as timeunit from "timeunit";
+import * as timeunit from "./time";
 
 import { Clock, defaultClock } from "./clock";
 import { nextNumber } from "./random";

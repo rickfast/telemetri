@@ -2,7 +2,7 @@ import "mocha";
 import { expect } from "chai";
 
 import { Counter } from "../../src/core/counter";
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 
 describe("Counter", () => {
   it("should start at zero", () => {

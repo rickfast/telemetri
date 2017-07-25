@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { CachedGauge } from "../../src/core/cached-gauge";
 import { Ratio, RatioGauge } from "../../src/core/ratio-gauge";
 
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 import * as sleep from "sleep";
 
 describe("RatioGauge", () => {

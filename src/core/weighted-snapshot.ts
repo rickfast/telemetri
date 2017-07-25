@@ -102,6 +102,10 @@ class WeightedSnapshot extends Snapshot {
     return Math.sqrt(variance);
   }
 
+  toJson(): any {
+    return super.toJson();
+  }
+
   dump(out: stream.Writable): void {
     try {
       this.values.forEach(value => {

@@ -1,4 +1,4 @@
-import * as timeunit from "timeunit";
+import * as timeunit from "./time";
 
 import { defaultClock, Clock } from "./clock";
 import { Ewma } from "./ewma";

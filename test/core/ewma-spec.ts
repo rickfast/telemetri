@@ -2,7 +2,7 @@ import "mocha";
 import { expect } from "chai";
 
 import { Ewma } from "../../src/core/ewma";
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 
 function elapseMinute(ewma: Ewma): void {
   for (let i = 1; i <= 12; i++) {

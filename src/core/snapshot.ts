@@ -9,7 +9,7 @@ abstract class Snapshot {
   abstract getMin(): number;
   abstract getStdDev(): number;
   abstract dump(output: stream.Writable);
-
+  
   getMedian(): number {
     return this.getValue(0.5);
   }

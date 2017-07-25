@@ -1,4 +1,4 @@
-import * as timeunit from 'timeunit';
+import * as timeunit from './time';
 
 abstract class Clock {
   abstract getTick(): number;

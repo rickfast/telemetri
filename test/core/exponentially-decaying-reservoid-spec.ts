@@ -1,6 +1,6 @@
 import "mocha";
 import { expect } from "chai";
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 
 import { ManualClock } from "./manual-clock";
 import { Snapshot } from "../../src/core/snapshot";

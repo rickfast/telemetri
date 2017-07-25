@@ -5,7 +5,7 @@ import { Timer } from "../../src/core/timer";
 import { UniformReservoir } from "../../src/core/uniform-reservoir";
 import { Clock } from "../../src/core/clock";
 
-import * as timeunit from "timeunit";
+import * as timeunit from "../../src/core/time";
 import * as sleep from 'sleep';
 
 const reservoir = new UniformReservoir();
