@@ -8,7 +8,8 @@
   "dependencies": {
     "@types/node": "^8.0.14",
     "js-range": "^1.0.0",
-    "prettyjson": "^1.2.1"
+    "prettyjson": "^1.2.1",
+    "statsd-client": "^0.4.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
