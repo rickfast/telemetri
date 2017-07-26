@@ -183,3 +183,5 @@ class StatsdReporter extends ScheduledReporter {
     this.reportMetered(name, timer);
   }
 }
+
+export { StatsdReporter };

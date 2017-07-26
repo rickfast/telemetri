@@ -8,10 +8,10 @@ describe("UserClock", () => {
   it("works", () => {
     const clock = defaultClock();
 
-    expect(clock.getTime()).to.be.closeTo(new Date().getTime(), 100.0);
+    expect(clock.getTime()).to.be.closeTo(new Date().getTime(), 1000.0);
     expect(clock.getTick()).to.be.closeTo(
       timeunit.milliseconds.toNanos(new Date().getTime()),
-      100.0
+      1000.0
     );
   });
 });

@@ -1,15 +1,12 @@
 import "mocha";
 import { expect } from "chai";
 
-import { ConsoleReporter } from "../../src/core/scheduled-reporter";
 import { defaultRegistry } from "../../src/index";
 
 import * as timeunit from "../../src/core/time";
 
 describe("MetricRegistry", () => {
   it("collects metrics", () => {
-    const reporter = new ConsoleReporter(defaultRegistry);
-
     defaultRegistry.register("one.gauge", () => 1.0);
 
     const counter = defaultRegistry.counter("a.counter");
