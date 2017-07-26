@@ -1,4 +1,4 @@
-import { Gauge } from "./gauge";
+import { Gauge } from './gauge';
 
 class Ratio {
   static of(numerator: number, denominator: number): Ratio {
@@ -10,7 +10,7 @@ class Ratio {
   getValue(): number {
     const d = this.denominator;
 
-    if (this.denominator !== this.denominator || d == 0 || d === Infinity) {
+    if (this.denominator !== this.denominator || d === 0 || d === Infinity) {
       return NaN;
     }
 

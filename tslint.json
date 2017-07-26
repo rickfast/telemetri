@@ -1,0 +1,85 @@
+{
+  "lintOptions": {
+    "typeCheck": true
+  },
+  "extends": [
+    "tslint:all"
+  ],
+  "rules":{
+    "typedef":[
+      true
+      /*"call-signature",*/
+      /*"arrow-call-signature",*/
+      /*"parameter",*/
+      /*"arrow-parameter",*/
+      /*"property-declaration",*/
+      /*"variable-declaration",*/
+      /*"member-variable-declaration",*/
+      /*"object-destructuring",*/
+      /*"array-destructuring"*/
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "single": "never",
+        "multiline": "never"
+      }
+    ],
+    "eofline": true,
+    "interface-name": [
+      "never-prefix"
+    ],
+    "no-parameter-properties": false,
+    "comment-format": [
+      false
+    ],
+    "no-string-literal": false,
+    "member-ordering": [
+      false
+    ],
+    "no-unsafe-any": false,
+    "completed-docs": [
+      false
+    ],
+    "strict-boolean-expressions": false,
+    "no-any": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape",
+      "jsx-double"
+    ],
+    "indent":[
+      true,
+      "spaces",
+      2
+    ],
+    "object-literal-sort-keys": [
+      false
+    ],
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "one-line": [
+      false
+    ],
+    "newline-before-return": true,
+    "no-trailing-whitespace": true,
+    "curly": true,
+    "no-void-expression": [
+      true,
+      "ignore-arrow-function-shorthand"
+    ],
+    "member-access": [
+      "no-public"
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "prefer-function-over-method": [
+      false
+    ],
+    "no-bitwise": false
+  }
+}

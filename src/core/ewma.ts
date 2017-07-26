@@ -1,7 +1,7 @@
-import * as timeunit from "./time";
+import * as timeunit from './time';
 
 const INTERVAL = 5;
-const SECONDS_PER_MINUTE = 60.0;
+const SECONDS_PER_MINUTE = 60;
 const ONE_MINUTE = 1;
 const FIVE_MINUTES = 5;
 const FIFTEEN_MINUTES = 15;
@@ -12,7 +12,7 @@ const M15_ALPHA =
 
 class Ewma {
   private initialized = false;
-  private rate = 0.0;
+  private rate = 0;
 
   private uncounted = 0;
   private alpha: number;
@@ -41,11 +41,11 @@ class Ewma {
 
   tick(): void {
     const count = this.uncounted;
-    
+
     this.uncounted = 0;
 
     const instantRate = count / this.interval;
-    
+
     if (this.initialized) {
       this.rate += this.alpha * (instantRate - this.rate);
     } else {

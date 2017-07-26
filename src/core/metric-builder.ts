@@ -1,11 +1,10 @@
-import { Counter } from "./counter";
-import { Gauge } from "./gauge";
-import { Histogram } from "./histogram";
-import { Meter } from "./meter";
-import { Metric } from "./metric";
-import { MetricKind } from "./metric-kind";
-import { ExponentiallyDecayingReservoir } from "./exponentially-decaying-reservoir";
-import { Timer } from "./timer";
+import { Counter } from './counter';
+import { ExponentiallyDecayingReservoir } from './exponentially-decaying-reservoir';
+import { Histogram } from './histogram';
+import { Meter } from './meter';
+import { Metric } from './metric';
+import { MetricKind } from './metric-kind';
+import { Timer } from './timer';
 
 class MetricBuilder<T extends Metric> {
   constructor(private kind: MetricKind, private supplier: () => T) {}

@@ -1,10 +1,10 @@
-import "mocha";
-import { expect } from "chai";
-import * as timeunit from "../../src/core/time";
+import { expect } from 'chai';
+import 'mocha';
+import * as timeunit from '../../src/core/time';
 
-import { ManualClock } from "./manual-clock";
-import { Snapshot } from "../../src/core/snapshot";
-import { ExponentiallyDecayingReservoir } from "../../src/core/exponentially-decaying-reservoir";
+import { ExponentiallyDecayingReservoir } from '../../src/core/exponentially-decaying-reservoir';
+import { Snapshot } from '../../src/core/snapshot';
+import { ManualClock } from './manual-clock';
 
 const assertAllValuesBetween = (
   reservoir: ExponentiallyDecayingReservoir,
@@ -15,12 +15,12 @@ const assertAllValuesBetween = (
     expect(i).to.be.lessThan(max).and.gte(min);
   });
 };
-describe("ExponentiallyDecayingReservoir", () => {
-  describe("with 100 out of 1000 elements", () => {
-    it("should match snapshot", () => {
+describe('ExponentiallyDecayingReservoir', () => {
+  describe('with 100 out of 1000 elements', () => {
+    it('should match snapshot', () => {
       const reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
 
-      for (var i = 0; i < 1000; i++) {
+      for (let i = 0; i < 1000; i++) {
         reservoir.update(i);
       }
 
@@ -33,11 +33,11 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("with 100 out of 10 elements", () => {
-    it("should match snapshot", () => {
+  describe('with 100 out of 10 elements', () => {
+    it('should match snapshot', () => {
       const reservoir = new ExponentiallyDecayingReservoir(100, 0.99);
 
-      for (var i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         reservoir.update(i);
       }
 
@@ -50,11 +50,11 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("heavily biased with 100 out of 1000 elements", () => {
-    it("should match snapshot", () => {
+  describe('heavily biased with 100 out of 1000 elements', () => {
+    it('should match snapshot', () => {
       const reservoir = new ExponentiallyDecayingReservoir(1000, 0.01);
 
-      for (var i = 0; i < 100; i++) {
+      for (let i = 0; i < 100; i++) {
         reservoir.update(i);
       }
 
@@ -67,8 +67,8 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("long periods of inactivity", () => {
-    it("should not corrupt sampling state", () => {
+  describe('long periods of inactivity', () => {
+    it('should not corrupt sampling state', () => {
       const clock = new ManualClock();
       const reservoir = new ExponentiallyDecayingReservoir(10, 0.015, clock);
 
@@ -97,7 +97,7 @@ describe("ExponentiallyDecayingReservoir", () => {
       assertAllValuesBetween(reservoir, 3000, 4000);
     });
 
-    it("fetch should resample", () => {
+    it('fetch should resample', () => {
       const clock = new ManualClock();
       const reservoir = new ExponentiallyDecayingReservoir(10, 0.015, clock);
 
@@ -123,8 +123,8 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("empty reservoir snapshot", () => {
-    it("should return zero for all values", () => {
+  describe('empty reservoir snapshot', () => {
+    it('should return zero for all values', () => {
       const reservoir = new ExponentiallyDecayingReservoir(
         100,
         0.015,
@@ -139,8 +139,8 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("spot lift", () => {
-    it("works", () => {
+  describe('spot lift', () => {
+    it('works', () => {
       const clock = new ManualClock();
       const reservoir = new ExponentiallyDecayingReservoir(1000, 0.015, clock);
 
@@ -164,8 +164,8 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  describe("spot fall", () => {
-    it("works", () => {
+  describe('spot fall', () => {
+    it('works', () => {
       const clock = new ManualClock();
       const reservoir = new ExponentiallyDecayingReservoir(1000, 0.015, clock);
 
@@ -189,10 +189,10 @@ describe("ExponentiallyDecayingReservoir", () => {
     });
   });
 
-  it("should have quantiles based on weights", () => {
+  it('should have quantiles based on weights', () => {
     const clock = new ManualClock();
     const reservoir = new ExponentiallyDecayingReservoir(1000, 0.015, clock);
-    
+
     for (let i = 0; i < 40; i++) {
       reservoir.update(177);
     }

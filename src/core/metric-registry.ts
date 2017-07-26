@@ -1,13 +1,19 @@
-import { Metric } from "./metric";
-import { Gauge } from "./gauge";
-import { Histogram } from "./histogram";
-import { Meter } from "./meter";
-import { Counter } from "./counter";
-import { Timer } from "./timer";
-import { ALL, MetricFilter } from "./metric-filter";
-import { MetricKind } from "./metric-kind";
-import { MetricSet } from "./metric-set";
-import { MetricBuilder, COUNTERS, HISTOGRAMS, METERS, TIMERS } from "./metric-builder";
+import { Counter } from './counter';
+import { Gauge } from './gauge';
+import { Histogram } from './histogram';
+import { Meter } from './meter';
+import { Metric } from './metric';
+import {
+  COUNTERS,
+  HISTOGRAMS,
+  METERS,
+  MetricBuilder,
+  TIMERS
+} from './metric-builder';
+import { ALL, MetricFilter } from './metric-filter';
+import { MetricKind } from './metric-kind';
+import { MetricSet } from './metric-set';
+import { Timer } from './timer';
 
 interface Metrics {
   [name: string]: Metric;
@@ -19,13 +25,9 @@ interface MetricMap<T extends Metric> {
 
 type GaugeLambda = () => void;
 
-const gaugeFromLambda = (lambda: GaugeLambda) => {
-  return { getValue: lambda };
-};
-
 class MetricRegistry {
   static buildName(name: string, ...names: string[]): string {
-    return [name].concat(names).join(".");
+    return [name].concat(names).join('.');
   }
 
   private metrics: Metrics = {};
@@ -34,7 +36,7 @@ class MetricRegistry {
     name: string,
     metric: T | GaugeLambda
   ): T | GaugeLambda {
-    if (typeof metric == "function") {
+    if (typeof metric === 'function') {
       const gauge = Gauge.forLambda(metric);
       this.register(name, gauge);
     } else {
@@ -43,15 +45,23 @@ class MetricRegistry {
         throw new Error(`A metric named ${name} already exists`);
       }
     }
+
     return metric;
   }
 
   gauge(name: string, gauge: Gauge<any> | GaugeLambda): Gauge<any> {
     if (typeof gauge === 'function') {
       const wrapped = Gauge.forLambda<any>(gauge);
-      return this.getOrAdd(name, new MetricBuilder(MetricKind.GAUGE, () => wrapped));
+
+      return this.getOrAdd(
+        name,
+        new MetricBuilder(MetricKind.GAUGE, () => wrapped)
+      );
     } else {
-      return this.getOrAdd(name, new MetricBuilder(MetricKind.GAUGE, () => gauge))
+      return this.getOrAdd(
+        name,
+        new MetricBuilder(MetricKind.GAUGE, () => gauge)
+      );
     }
   }
 
@@ -71,16 +81,16 @@ class MetricRegistry {
     return this.getOrAdd(name, TIMERS);
   }
 
-  private putIfAbsent(name: string, metric: Metric): Metric | null {
+  private putIfAbsent(name: string, metric: Metric): Metric | undefined {
     const value = this.metrics[name];
 
-    if (value == undefined) {
+    if (value === undefined) {
       this.metrics[name] = metric;
     } else {
       return value;
     }
 
-    return null;
+    return undefined;
   }
 
   remove(name: string): boolean {
@@ -88,6 +98,7 @@ class MetricRegistry {
 
     if (metric) {
       delete this.metrics[name];
+
       return true;
     } else {
       return false;
@@ -102,19 +113,19 @@ class MetricRegistry {
     return this.getAllMetrics(MetricKind.GAUGE, filter);
   }
 
-  getHistograms<T>(filter: MetricFilter = ALL): MetricMap<Histogram> {
+  getHistograms(filter: MetricFilter = ALL): MetricMap<Histogram> {
     return this.getAllMetrics(MetricKind.HISTOGRAM, filter);
   }
 
-  getCounters<T>(filter: MetricFilter = ALL): MetricMap<Counter> {
+  getCounters(filter: MetricFilter = ALL): MetricMap<Counter> {
     return this.getAllMetrics(MetricKind.COUNTER, filter);
   }
 
-  getMeters<T>(filter: MetricFilter = ALL): MetricMap<Meter> {
+  getMeters(filter: MetricFilter = ALL): MetricMap<Meter> {
     return this.getAllMetrics(MetricKind.METER, filter);
   }
 
-  getTimers<T>(filter: MetricFilter = ALL): MetricMap<Timer> {
+  getTimers(filter: MetricFilter = ALL): MetricMap<Timer> {
     return this.getAllMetrics(MetricKind.TIMER, filter);
   }
 
@@ -124,34 +135,38 @@ class MetricRegistry {
   ): T {
     const metric = this.metrics[name];
     if (metric && builder.isInstance(metric)) {
-      return <T>metric;
-    } else if (metric == null) {
+      return metric as T;
+    } else if (metric === undefined) {
       try {
-        return <T>this.register(name, builder.getMetric());
+        return this.register(name, builder.getMetric()) as T;
       } catch (e) {
         const added = this.metrics[name];
         if (builder.isInstance(added)) {
-          return <T>added;
+          return added as T;
         }
       }
     }
-    throw new Error(name + " is already used for a different type of metric");
+    throw new Error(`${name} is already used for a different type of metric`);
   }
 
   private getAllMetrics<T extends Metric>(
     kind: MetricKind,
     filter: MetricFilter
   ): MetricMap<T> {
+    // tslint:disable-next-line:no-object-literal-type-assertion
     const result = {} as MetricMap<T>;
 
     Object.keys(this.metrics)
-      .filter(name => this.metrics[name].kind === kind && filter(name, this.metrics[name]))
+      .filter(
+        name =>
+          this.metrics[name].kind === kind && filter(name, this.metrics[name])
+      )
       .forEach(name => (result[name] = this.metrics[name] as T));
 
     return result;
   }
 
-  registerAll(metrics: MetricSet, prefix: string = null): void {
+  registerAll(metrics: MetricSet, prefix?: string): void {
     Object.keys(metrics).forEach(name => {
       this.register(MetricRegistry.buildName(prefix, name), metrics[name]);
     });

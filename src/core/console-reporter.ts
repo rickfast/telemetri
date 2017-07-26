@@ -1,21 +1,20 @@
-import { Reporter } from "./reporter";
-import { Metric } from "./metric";
-import { ALL, MetricFilter } from "./metric-filter";
-import { MetricRegistry } from "./metric-registry";
-import { Gauge } from "./gauge";
-import { Histogram } from "./histogram";
-import { Meter } from "./meter";
-import { Counter } from "./counter";
-import { Timer } from "./timer";
-import { Metrics } from "./metrics";
-import { ScheduledReporter } from "./scheduled-reporter";
+import { Counter } from './counter';
+import { Gauge } from './gauge';
+import { Histogram } from './histogram';
+import { Meter } from './meter';
+import { Metric } from './metric';
+import { ALL } from './metric-filter';
+import { MetricRegistry } from './metric-registry';
+import { Metrics } from './metrics';
+import { ScheduledReporter } from './scheduled-reporter';
+import { Timer } from './timer';
 
-import * as timeunit from "./time";
-import * as prettyjson from "prettyjson";
+import * as prettyjson from 'prettyjson';
+import * as timeunit from './time';
 
 class ConsoleReporter extends ScheduledReporter {
   constructor(registry: MetricRegistry, private out: any = console) {
-    super(registry, "", ALL, timeunit.seconds, timeunit.seconds);
+    super(registry, '', ALL, timeunit.seconds, timeunit.seconds);
   }
 
   report(
@@ -42,8 +41,6 @@ class ConsoleReporter extends ScheduledReporter {
     Object.keys(metrics).forEach(
       name => (result[name] = metrics[name].toJson())
     );
-
-    console.log(result);
 
     return result;
   }

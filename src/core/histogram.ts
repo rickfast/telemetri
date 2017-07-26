@@ -1,9 +1,9 @@
-import { Metric } from "./metric";
-import { MetricKind } from "./metric-kind";
-import { Sampling } from "./sampling";
-import { Counting } from "./counting";
-import { Reservoir } from "./reservoir";
-import { Snapshot } from "./snapshot";
+import { Counting } from './counting';
+import { Metric } from './metric';
+import { MetricKind } from './metric-kind';
+import { Reservoir } from './reservoir';
+import { Sampling } from './sampling';
+import { Snapshot } from './snapshot';
 
 class Histogram implements Metric, Sampling, Counting {
   private count = 0;
@@ -31,8 +31,8 @@ class Histogram implements Metric, Sampling, Counting {
     return {
       count: this.count,
       ...this.getSnapshot().toJson()
-    }
-  };
+    };
+  }
 }
 
 export { Histogram };

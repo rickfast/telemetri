@@ -1,5 +1,5 @@
 interface Counting {
-    getCount(): number;
+  getCount(): number;
 }
 
 export { Counting };

@@ -1,6 +1,6 @@
-import { Metric } from "./metric";
-import { MetricKind } from "./metric-kind";
-import { Counting } from "./counting";
+import { Counting } from './counting';
+import { Metric } from './metric';
+import { MetricKind } from './metric-kind';
 
 class Counter implements Metric, Counting {
   private count = 0;

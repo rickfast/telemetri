@@ -24,10 +24,14 @@
     "sinon-chai": "^2.12.0",
     "sleep": "^5.1.1",
     "ts-node": "^3.2.1",
+    "tslint": "^5.5.0",
     "typescript": "^2.4.2"
   },
   "scripts": {
     "build": "tsc",
-    "test": "mocha -r ts-node/register test/**/*.ts"
+    "test": "mocha -r ts-node/register test/**/*.ts",
+    "pretty": "prettier 'src/**/*.ts' --write",
+    "lint": "tslint --config ./tslint.json --project ./tsconfig.json --format stylish",
+    "fix": "tslint --config ./tslint.json --project ./tsconfig.json --format stylish --fix"
   }
 }

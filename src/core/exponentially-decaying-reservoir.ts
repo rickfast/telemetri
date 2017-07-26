@@ -1,10 +1,10 @@
-import * as timeunit from "./time";
+import * as timeunit from './time';
 
-import { Clock, defaultClock } from "./clock";
-import { nextNumber } from "./random";
-import { WeightedSample, WeightedSnapshot } from "./weighted-snapshot";
-import { Reservoir } from "./reservoir";
-import { Snapshot } from "./snapshot";
+import { Clock, defaultClock } from './clock';
+import { nextNumber } from './random';
+import { Reservoir } from './reservoir';
+import { Snapshot } from './snapshot';
+import { WeightedSample, WeightedSnapshot } from './weighted-snapshot';
 
 const DEFAULT_SIZE = 1028;
 const DEFAULT_ALPHA = 0.015;
@@ -21,6 +21,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
   private nextScaleTime: number;
 
   constructor(
+    // tslint:disable-next-line:variable-name
     private _size: number = DEFAULT_SIZE,
     private alpha: number = DEFAULT_ALPHA,
     private clock: Clock = defaultClock()
@@ -47,7 +48,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
       const first = Object.keys(this.values)[0];
       if (
         parseFloat(first) < priority &&
-        this.putIfAbsent(priority, sample) == null
+        this.putIfAbsent(priority, sample) === undefined
       ) {
         // ensure we always remove an item
         delete this.values[Object.keys(this.values)[0]];
@@ -58,7 +59,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
   private putIfAbsent(
     priority: number,
     sample: WeightedSample
-  ): WeightedSample | null {
+  ): WeightedSample | undefined {
     const value = this.values[priority];
 
     if (!value) {
@@ -67,7 +68,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
       return value;
     }
 
-    return null;
+    return undefined;
   }
 
   private rescaleIfNeeded(): void {
@@ -80,6 +81,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
 
   getSnapshot(): Snapshot {
     this.rescaleIfNeeded();
+
     return new WeightedSnapshot(Object.values(this.values));
   }
 
@@ -101,8 +103,7 @@ class ExponentiallyDecayingReservoir implements Reservoir {
     if (scalingFactor === 0) {
       this.values = {};
     } else {
-      const keys: number[] = Object.keys(this.values).map(key =>
-        parseFloat(key)
+      const keys: number[] = Object.keys(this.values).map(parseFloat
       );
       keys.forEach(key => {
         const sample = this.values[key];

@@ -1,8 +1,8 @@
-import "mocha";
-import { expect } from "chai";
+import { expect } from 'chai';
+import 'mocha';
 
-import { Ewma } from "../../src/core/ewma";
-import * as timeunit from "../../src/core/time";
+import { Ewma } from '../../src/core/ewma';
+import * as timeunit from '../../src/core/time';
 
 function elapseMinute(ewma: Ewma): void {
   for (let i = 1; i <= 12; i++) {
@@ -10,11 +10,11 @@ function elapseMinute(ewma: Ewma): void {
   }
 }
 
-describe("EWMA", () => {
-  describe("One minute EWMA", () => {
+describe('EWMA', () => {
+  describe('One minute EWMA', () => {
     const ewma = Ewma.oneMinuteEwma();
 
-    it("should set rate", () => {
+    it('should set rate', () => {
       ewma.update(3);
       ewma.tick();
       expect(ewma.getRate(timeunit.seconds)).to.be.closeTo(0.6, 0.000001);
@@ -93,10 +93,10 @@ describe("EWMA", () => {
     });
   });
 
-  describe("Five minute EWMA", () => {
+  describe('Five minute EWMA', () => {
     const ewma = Ewma.fiveMinuteEwma();
 
-    it("should set rate", () => {
+    it('should set rate', () => {
       ewma.update(3);
       ewma.tick();
       expect(ewma.getRate(timeunit.seconds)).to.be.closeTo(0.6, 0.000001);
@@ -175,10 +175,10 @@ describe("EWMA", () => {
     });
   });
 
-  describe("Fifteen minute EWMA", () => {
+  describe('Fifteen minute EWMA', () => {
     const ewma = Ewma.fifteenMinuteEwma();
 
-    it("should set rate", () => {
+    it('should set rate', () => {
       ewma.update(3);
       ewma.tick();
       expect(ewma.getRate(timeunit.seconds)).to.be.closeTo(0.6, 0.000001);

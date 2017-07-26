@@ -1,16 +1,15 @@
-import "mocha";
-import { expect } from "chai";
+import { expect } from 'chai';
+import 'mocha';
 
-import { Timer } from "../../src/core/timer";
-import { UniformReservoir } from "../../src/core/uniform-reservoir";
-import { Clock } from "../../src/core/clock";
+import { Clock } from '../../src/core/clock';
+import { Timer } from '../../src/core/timer';
+import { UniformReservoir } from '../../src/core/uniform-reservoir';
 
-import * as timeunit from "../../src/core/time";
-import * as sleep from 'sleep';
+import * as timeunit from '../../src/core/time';
 
 const reservoir = new UniformReservoir();
 class FiftyClock extends Clock {
-  val: number = 0;
+  val = 0;
 
   getTick(): number {
     this.val += 50000000;
@@ -19,11 +18,11 @@ class FiftyClock extends Clock {
   }
 }
 
-describe("Timer", () => {
-  describe("new timer", () => {
+describe('Timer', () => {
+  describe('new timer', () => {
     const timer = new Timer(reservoir, new FiftyClock());
 
-    it("has rate", () => {
+    it('has rate', () => {
       expect(timer.getCount()).to.eq(0);
       expect(timer.getMeanRate()).to.be.closeTo(0.0, 0.001);
       expect(timer.getOneMinuteRate()).to.be.closeTo(0.0, 0.001);
@@ -32,10 +31,10 @@ describe("Timer", () => {
     });
   });
 
-  describe("a timer", () => {
+  describe('a timer', () => {
     const timer = new Timer(reservoir, new FiftyClock());
 
-    it("increments the count on updates", () => {
+    it('increments the count on updates', () => {
       expect(timer.getCount()).to.eq(0);
 
       timer.update(1, timeunit.seconds);
@@ -44,11 +43,11 @@ describe("Timer", () => {
     });
   });
 
-  describe("a timer", () => {
+  describe('a timer', () => {
     const clock = new FiftyClock();
     const timer = new Timer(reservoir, clock);
 
-    it("times", () => {
+    it('times', () => {
       const context = timer.time();
       const duration = context.stop();
 

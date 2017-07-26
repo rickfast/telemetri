@@ -1,5 +1,5 @@
-import { Metric } from "./metric";
-import { Counting } from "./counting";
+import { Counting } from './counting';
+import { Metric } from './metric';
 
 interface Metered extends Metric, Counting {
   getCount(): number;

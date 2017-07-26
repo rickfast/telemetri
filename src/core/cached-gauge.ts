@@ -1,7 +1,6 @@
-import * as timeunit from "../../src/core/time";
 
-import { Gauge } from "./gauge";
-import { defaultClock, Clock } from "./clock";
+import { Clock, defaultClock } from './clock';
+import { Gauge } from './gauge';
 
 import { TimeUnit } from './time';
 
@@ -25,11 +24,12 @@ abstract class CachedGauge<T> extends Gauge<T> {
     if (this.shouldLoad()) {
       this.value = this.loadValue();
     }
+
     return this.value;
   }
 
   private shouldLoad(): boolean {
-    for (;;) {
+    for (; ; ) {
       const time = this.clock.getTick();
       const current = this.reloadAt;
 

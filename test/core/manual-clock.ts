@@ -1,6 +1,6 @@
-import * as timeunit from "../../src/core/time";
+import * as timeunit from '../../src/core/time';
 
-import { Clock } from "../../src/core/clock";
+import { Clock } from '../../src/core/clock';
 
 class ManualClock extends Clock {
   ticksInNanos = 0;

@@ -1,11 +1,12 @@
-import * as timeunit from "./time";
+import * as timeunit from './time';
 
-import { defaultClock, Clock } from "./clock";
-import { Ewma } from "./ewma";
-import { Metered } from "./metered";
+import { Clock, defaultClock } from './clock';
+import { Ewma } from './ewma';
+import { Metered } from './metered';
 import { MetricKind } from './metric-kind';
 
-const TICK_INTERVAL = timeunit.seconds.toNanos(5);
+const TICK_SECONDS = 5;
+const TICK_INTERVAL = timeunit.seconds.toNanos(TICK_SECONDS);
 
 class Meter implements Metered {
   private m1Rate = Ewma.oneMinuteEwma();
@@ -55,25 +56,29 @@ class Meter implements Metered {
 
   getFifteenMinuteRate(): number {
     this.tickIfNecessary();
+
     return this.m15Rate.getRate(timeunit.seconds);
   }
 
   getFiveMinuteRate(): number {
     this.tickIfNecessary();
+
     return this.m5Rate.getRate(timeunit.seconds);
   }
 
   getMeanRate(): number {
-    if (this.count == 0) {
-      return 0.0;
+    if (this.count === 0) {
+      return 0;
     } else {
       const elapsed = this.clock.getTick() - this.startTime;
+
       return this.count / elapsed * timeunit.seconds.toNanos(1);
     }
   }
 
   getOneMinuteRate(): number {
     this.tickIfNecessary();
+
     return this.m1Rate.getRate(timeunit.seconds);
   }
 

@@ -1,5 +1,5 @@
-import { Snapshot } from "./snapshot";
-import * as stream from "stream";
+import * as stream from 'stream';
+import { Snapshot } from './snapshot';
 
 interface WeightedSample {
   value: number;
@@ -15,11 +15,9 @@ class WeightedSnapshot extends Snapshot {
     super();
     const copy = values.slice();
 
-    copy.sort((o1, o2) => {
-      if (o1.value > o2.value) return 1;
-      if (o1.value < o2.value) return -1;
-      return 0;
-    });
+    copy.sort(
+      (o1, o2) => (o1.value > o2.value ? 1 : o1.value < o2.value ? -1 : 0)
+    );
 
     this.values = [];
     this.normWeights = [];
@@ -31,7 +29,7 @@ class WeightedSnapshot extends Snapshot {
     copy.forEach(sample => {
       this.values.push(sample.value);
       this.normWeights.push(sample.weight / sumWeight);
-      this.quantiles.push(0)
+      this.quantiles.push(0);
     });
 
     for (let i = 1; i < copy.length; i++) {
@@ -40,18 +38,18 @@ class WeightedSnapshot extends Snapshot {
   }
 
   getValue(quantile: number): number {
-    if (quantile < 0.0 || quantile > 1.0 || quantile !== quantile) {
+    if (quantile < 0 || quantile > 1 || quantile !== quantile) {
       throw new Error(`${quantile} is not in [0..1]`);
     }
 
-    if (this.values.length == 0) {
-      return 0.0;
+    if (this.values.length === 0) {
+      return 0;
     }
 
     let pos = this.quantiles.findIndex(item => item > quantile);
 
-    pos = pos == -1 || pos == this.size() ? this.size() - 1 : pos - 1; 
-    
+    pos = pos === -1 || pos === this.size() ? this.size() - 1 : pos - 1;
+
     return this.values[~~pos];
   }
 
@@ -64,15 +62,15 @@ class WeightedSnapshot extends Snapshot {
   }
 
   getMax(): number {
-    return this.values.length == 0 ? 0 : this.values[this.values.length - 1];
+    return this.values.length === 0 ? 0 : this.values[this.values.length - 1];
   }
 
   getMin() {
-    return this.values.length == 0 ? 0 : this.values[0];
+    return this.values.length === 0 ? 0 : this.values[0];
   }
 
   getMean(): number {
-    if (this.values.length == 0) {
+    if (this.values.length === 0) {
       return 0;
     }
 

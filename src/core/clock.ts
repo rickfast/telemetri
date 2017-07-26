@@ -16,8 +16,7 @@ class UserTimeClock extends Clock {
 
 const DEFAULT: Clock = new UserTimeClock();
 
-const defaultClock = (): Clock => {
-  return DEFAULT;
-};
+const defaultClock = (): Clock =>
+  DEFAULT;
 
 export { Clock, defaultClock };

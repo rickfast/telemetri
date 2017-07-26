@@ -1,16 +1,15 @@
-import { Reporter } from "./reporter";
-import { Metric } from "./metric";
-import { ALL, MetricFilter } from "./metric-filter";
-import { MetricRegistry } from "./metric-registry";
+import { ALL, MetricFilter } from './metric-filter';
+import { MetricRegistry } from './metric-registry';
+import { Reporter } from './reporter';
 
-import { Gauge } from "./gauge";
-import { Histogram } from "./histogram";
-import { Meter } from "./meter";
-import { Counter } from "./counter";
-import { Timer } from "./timer";
-import { Metrics } from "./metrics";
+import { Counter } from './counter';
+import { Gauge } from './gauge';
+import { Histogram } from './histogram';
+import { Meter } from './meter';
+import { Metrics } from './metrics';
+import { Timer } from './timer';
 
-import * as timeunit from "./time";
+import * as timeunit from './time';
 
 abstract class ScheduledReporter implements Reporter {
   private registry: MetricRegistry;
@@ -40,7 +39,7 @@ abstract class ScheduledReporter implements Reporter {
   start(periodMs: number): void {
     this.interval = setInterval(() => {
       this._report();
-    }, periodMs);
+    },                          periodMs);
   }
 
   stop(): void {
@@ -75,6 +74,7 @@ abstract class ScheduledReporter implements Reporter {
 
   private calculateRateUnit(unit: timeunit.TimeUnit): string {
     const s = unit.toString().toLowerCase();
+
     return s.substring(0, s.length - 1);
   }
 }

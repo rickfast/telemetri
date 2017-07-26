@@ -1,12 +1,12 @@
-import "mocha";
-import { expect } from "chai";
+import { expect } from 'chai';
+import 'mocha';
 
-import { Snapshot } from "../../src/core/snapshot";
-import { UniformReservoir } from "../../src/core/uniform-reservoir";
+import { Snapshot } from '../../src/core/snapshot';
+import { UniformReservoir } from '../../src/core/uniform-reservoir';
 
-describe("UniformReservoir", () => {
+describe('UniformReservoir', () => {
   describe('with 100 out of 1000 elements', () => {
-    it("should match snapshot", () => {
+    it('should match snapshot', () => {
       const reservoir = new UniformReservoir(100);
       for (let i = 0; i < 1000; i++) {
         reservoir.update(i);

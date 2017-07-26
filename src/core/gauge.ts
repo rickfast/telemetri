@@ -8,12 +8,12 @@ abstract class Gauge<T> implements Metric {
     return { value: this.getValue() };
   }
 
-  static forLambda<T>(getValue: () => T): Gauge<T> {
-    return new (class _Gauge extends Gauge<T> {
-      getValue(): T {
+  static forLambda<X>(getValue: () => X): Gauge<X> {
+    return new class LambdaGauge extends Gauge<X> {
+      getValue(): X {
         return getValue();
-      };
-    })()
+      }
+    }();
   }
 }
 

@@ -1,11 +1,10 @@
-import "mocha";
-import { expect } from "chai";
+import { expect } from 'chai';
+import 'mocha';
 
-import { Counter } from "../../src/core/counter";
-import * as timeunit from "../../src/core/time";
+import { Counter } from '../../src/core/counter';
 
-describe("Counter", () => {
-  it("should start at zero", () => {
+describe('Counter', () => {
+  it('should start at zero', () => {
     const counter = new Counter();
     expect(counter.getCount()).to.eq(0);
   });

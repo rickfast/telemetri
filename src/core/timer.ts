@@ -1,13 +1,13 @@
-import { Metered } from "./metered";
-import { Sampling } from "./sampling";
-import { Clock, defaultClock } from "./clock";
-import { Meter } from "./meter";
-import { MetricKind } from "./metric-kind";
-import { Histogram } from "./histogram";
-import { Reservoir } from "./reservoir";
-import { Snapshot } from "./snapshot";
-import { ExponentiallyDecayingReservoir } from "./exponentially-decaying-reservoir";
-import * as timeunit from "./time";
+import { Clock, defaultClock } from './clock';
+import { ExponentiallyDecayingReservoir } from './exponentially-decaying-reservoir';
+import { Histogram } from './histogram';
+import { Meter } from './meter';
+import { Metered } from './metered';
+import { MetricKind } from './metric-kind';
+import { Reservoir } from './reservoir';
+import { Sampling } from './sampling';
+import { Snapshot } from './snapshot';
+import * as timeunit from './time';
 
 class TimeContext {
   private startTime: number;
@@ -19,6 +19,7 @@ class TimeContext {
   stop(): number {
     const elapsed = this.clock.getTick() - this.startTime;
     this.timer.update(elapsed, timeunit.nanoseconds);
+
     return elapsed;
   }
 }
@@ -26,7 +27,7 @@ class TimeContext {
 class Timer implements Metered, Sampling {
   private meter: Meter;
   private histogram: Histogram;
-  
+
   readonly kind = MetricKind.TIMER;
 
   constructor(
@@ -37,7 +38,10 @@ class Timer implements Metered, Sampling {
     this.histogram = new Histogram(reservoir);
   }
 
-  update(duration: number, unit: timeunit.TimeUnit = timeunit.nanoseconds): void {
+  update(
+    duration: number,
+    unit: timeunit.TimeUnit = timeunit.nanoseconds
+  ): void {
     const dur = unit.toNanos(duration);
 
     if (dur >= 0) {

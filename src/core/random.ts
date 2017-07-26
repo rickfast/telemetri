@@ -1,5 +1,4 @@
-const nextNumber = () => {
-  return Math.random();
-}
+const nextNumber = () =>
+  Math.random();
 
 export { nextNumber };

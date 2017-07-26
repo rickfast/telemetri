@@ -1,10 +1,13 @@
-import { Request, RequestHandler, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as onFinished from 'finished';
 
 import { defaultRegistry, MetricRegistry } from '../index';
 
-const instrumented = (name: string, registry: MetricRegistry = defaultRegistry) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+const instrumented = (
+  name: string,
+  registry: MetricRegistry = defaultRegistry
+) =>
+  (req: Request, res: Response, next: NextFunction) => {
     const stopwatch = registry.timer(`${name}.httpIn`).time();
 
     req['metricRegistry'] = registry;
@@ -15,7 +18,6 @@ const instrumented = (name: string, registry: MetricRegistry = defaultRegistry) 
     });
 
     next();
-  }
-};
+  };
 
 export { instrumented };

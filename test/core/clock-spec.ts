@@ -1,11 +1,11 @@
-import "mocha";
-import { expect } from "chai";
+import { expect } from 'chai';
+import 'mocha';
 
-import { defaultClock } from "../../src/core/clock";
-import * as timeunit from "../../src/core/time";
+import { defaultClock } from '../../src/core/clock';
+import * as timeunit from '../../src/core/time';
 
-describe("UserClock", () => {
-  it("works", () => {
+describe('UserClock', () => {
+  it('works', () => {
     const clock = defaultClock();
 
     expect(clock.getTime()).to.be.closeTo(new Date().getTime(), 1000.0);

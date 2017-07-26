@@ -1,4 +1,4 @@
-import { Gauge } from "./gauge";
+import { Gauge } from './gauge';
 
 abstract class DerivativeGauge<F, T> extends Gauge<T> {
   constructor(private base: Gauge<F>) {
