@@ -7,12 +7,14 @@ import { Gauge } from '../core/gauge';
 import { Histogram } from '../core/histogram';
 import { Meter } from '../core/meter';
 import { Metered } from '../core/metered';
+import { Metric } from '../core/metric';
 import { Metrics } from '../core/metrics';
 import * as timeunit from '../core/time';
 import { Timer } from '../core/timer';
 
 import { StatsdConfig } from './statsd-config';
 
+import { flatten } from 'flat';
 import * as Statsd from 'statsd-client';
 
 const STATSD_HOST_OPTION = 'host';
@@ -21,7 +23,7 @@ const REPORTING_METRIC_PREFIX = 'prefix';
 const STATSD_DEFAULT_HOST = 'localhost';
 const STATSD_DEFAULT_PORT = 8125;
 
-class StatsdReporter extends ScheduledReporter {
+class SimpleStatsdReporter extends ScheduledReporter {
   private statsd: Statsd;
 
   constructor(
@@ -33,7 +35,7 @@ class StatsdReporter extends ScheduledReporter {
   ) {
     super(
       registry,
-      'statsd-reporter',
+      'simple-statsd-reporter',
       ALL,
       rateUnit,
       durationUnit
@@ -52,15 +54,29 @@ class StatsdReporter extends ScheduledReporter {
     meters: Metrics<Meter>,
     timers: Metrics<Timer>
   ): void {
-    Object.keys(gauges).forEach(name => this.reportGauge(name, gauges[name]));
-    Object.keys(counters).forEach(name =>
-      this.reportCounter(name, counters[name])
+    const metrics = flatten(
+      {
+        gauges: this.convert(gauges),
+        counters: this.convert(counters),
+        histograms: this.convert(histograms),
+        meters: this.convert(meters),
+        timers: this.convert(timers)
+      }
     );
-    Object.keys(histograms).forEach(name =>
-      this.reportHistogram(name, histograms[name])
+
+    Object.keys(metrics).forEach(name => {
+      this.statsd.gauge(name, metrics[name]);
+    });
+  }
+
+  private convert(metrics: Metrics<Metric>): any {
+    const result = {};
+
+    Object.keys(metrics).forEach(
+      name => (result[name] = metrics[name].toJson())
     );
-    Object.keys(meters).forEach(name => this.reportMetered(name, meters[name]));
-    Object.keys(timers).forEach(name => this.reportTimer(name, timers[name]));
+
+    return result;
   }
 
   private reportGauge(name: string, gauge: Gauge<any>): void {
@@ -193,4 +209,4 @@ class StatsdReporter extends ScheduledReporter {
   }
 }
 
-export { StatsdReporter };
+export { SimpleStatsdReporter };

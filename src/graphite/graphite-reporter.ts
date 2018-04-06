@@ -1,7 +1,8 @@
-import { ALL, MetricFilter } from '../core/metric-filter';
+import { MetricFilter } from '../core/metric-filter';
 import { MetricRegistry } from '../core/metric-registry';
 import { ScheduledReporter } from '../core/scheduled-reporter';
 
+import { Clock } from '../core/clock';
 import { Counter } from '../core/counter';
 import { Gauge } from '../core/gauge';
 import { Histogram } from '../core/histogram';
@@ -11,38 +12,30 @@ import { Metrics } from '../core/metrics';
 import * as timeunit from '../core/time';
 import { Timer } from '../core/timer';
 
-import { StatsdConfig } from './statsd-config';
+import { Graphite } from './graphite';
+import { GraphiteConfig } from './graphite-config';
+import { GraphiteMetric } from './graphite-metric';
 
-import * as Statsd from 'statsd-client';
+const GRAPHITE_DEFAULT_HOST = 'localhost';
+const GRAPHITE_DEFAULT_PORT = 1;
 
-const STATSD_HOST_OPTION = 'host';
-const STATSD_PORT_OPTION = 'port';
-const REPORTING_METRIC_PREFIX = 'prefix';
-const STATSD_DEFAULT_HOST = 'localhost';
-const STATSD_DEFAULT_PORT = 8125;
+class GraphiteReporter extends ScheduledReporter {
 
-class StatsdReporter extends ScheduledReporter {
-  private statsd: Statsd;
+  private graphite: Graphite;
 
   constructor(
     registry: MetricRegistry,
+    private clock: Clock,
     filter: MetricFilter,
     rateUnit: timeunit.TimeUnit,
     durationUnit: timeunit.TimeUnit,
-    config: StatsdConfig
+    config: GraphiteConfig
   ) {
-    super(
-      registry,
-      'statsd-reporter',
-      ALL,
-      rateUnit,
-      durationUnit
+    super(registry, 'graphite-reporter', filter, rateUnit, durationUnit);
+    this.graphite = new Graphite(
+      config.host || GRAPHITE_DEFAULT_HOST,
+      config.port || GRAPHITE_DEFAULT_PORT
     );
-    this.statsd = new Statsd({
-      host: config[STATSD_HOST_OPTION] || STATSD_DEFAULT_HOST,
-      port: config[STATSD_PORT_OPTION] || STATSD_DEFAULT_PORT,
-      prefix: config[REPORTING_METRIC_PREFIX] || ''
-    });
   }
 
   report(
@@ -52,26 +45,29 @@ class StatsdReporter extends ScheduledReporter {
     meters: Metrics<Meter>,
     timers: Metrics<Timer>
   ): void {
-    Object.keys(gauges).forEach(name => this.reportGauge(name, gauges[name]));
+    // tslint:disable-next-line:no-magic-numbers
+    const timestamp = this.clock.getTime() / 1000;
+
+    Object.keys(gauges).forEach(name => this.reportGauge(name, gauges[name], timestamp));
     Object.keys(counters).forEach(name =>
-      this.reportCounter(name, counters[name])
+      this.reportCounter(name, counters[name], timestamp)
     );
     Object.keys(histograms).forEach(name =>
-      this.reportHistogram(name, histograms[name])
+      this.reportHistogram(name, histograms[name], timestamp)
     );
-    Object.keys(meters).forEach(name => this.reportMetered(name, meters[name]));
-    Object.keys(timers).forEach(name => this.reportTimer(name, timers[name]));
+    Object.keys(meters).forEach(name => this.reportMetered(name, meters[name], timestamp));
+    Object.keys(timers).forEach(name => this.reportTimer(name, timers[name], timestamp));
   }
 
-  private reportGauge(name: string, gauge: Gauge<any>): void {
+  private reportGauge(name: string, gauge: Gauge<any>, timestamp: number): void {
     this.statsd.gauge(name, gauge.getValue());
   }
 
-  private reportCounter(name: string, counter: Counter): void {
+  private reportCounter(name: string, counter: Counter, timestamp: number): void {
     this.statsd.increment(name, counter.getCount());
   }
 
-  private reportMetered(name: string, meter: Metered): void {
+  private reportMetered(name: string, meter: Metered, timestamp: number): void {
     this.statsd.gauge(
       MetricRegistry.buildName(name, 'count'),
       meter.getCount()
@@ -94,7 +90,7 @@ class StatsdReporter extends ScheduledReporter {
     );
   }
 
-  private reportHistogram(name: string, histogram: Histogram): void {
+  private reportHistogram(name: string, histogram: Histogram, timestamp: number): void {
     const snapshot = histogram.getSnapshot();
     this.statsd.gauge(
       MetricRegistry.buildName(name, 'count'),
@@ -142,7 +138,7 @@ class StatsdReporter extends ScheduledReporter {
     );
   }
 
-  private reportTimer(name: string, timer: Timer): void {
+  private reportTimer(name: string, timer: Timer, timestamp: number): void {
     const snapshot = timer.getSnapshot();
     this.statsd.gauge(
       MetricRegistry.buildName(name, 'count'),

@@ -5,7 +5,7 @@ abstract class Gauge<T> implements Metric {
   readonly kind = MetricKind.GAUGE;
   abstract getValue(): T;
   toJson(): any {
-    return { value: this.getValue() };
+    return this.getValue();
   }
 
   static forLambda<X>(getValue: () => X): Gauge<X> {
