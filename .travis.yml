@@ -4,12 +4,11 @@ node_js:
 script:
 -  yarn run build
 -  yarn run test
-before_deploy:
--  yarn run build
 deploy:
   on:
     tags: true
   provider: npm
+  skip_cleanup: true
   email: rick.t.fast@gmail.com
   api_key: $NPM_TOKEN
 env:
