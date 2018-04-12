@@ -15,17 +15,17 @@ import { MetricKind } from './metric-kind';
 import { MetricSet } from './metric-set';
 import { Timer } from './timer';
 
-interface Metrics {
+export interface Metrics {
   [name: string]: Metric;
 }
 
-interface MetricMap<T extends Metric> {
+export interface MetricMap<T extends Metric> {
   [name: string]: T;
 }
 
-type GaugeLambda = () => void;
+export type GaugeLambda = () => void;
 
-class MetricRegistry {
+export class MetricRegistry {
   static buildName(name: string, ...names: string[]): string {
     return [name].concat(names).join('.');
   }
@@ -176,5 +176,3 @@ class MetricRegistry {
     return this.metrics;
   }
 }
-
-export { MetricRegistry, GaugeLambda, Metrics, MetricMap };

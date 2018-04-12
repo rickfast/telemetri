@@ -3,7 +3,7 @@
     "allowJs": false,
     "baseUrl": ".",
     "checkJs": false,
-    "declaration": false,
+    "declaration": true,
     "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",

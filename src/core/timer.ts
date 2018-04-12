@@ -9,7 +9,7 @@ import { Sampling } from './sampling';
 import { Snapshot } from './snapshot';
 import * as timeunit from './time';
 
-class TimeContext {
+export class TimeContext {
   private startTime: number;
 
   constructor(private timer: Timer, private clock: Clock) {
@@ -24,7 +24,7 @@ class TimeContext {
   }
 }
 
-class Timer implements Metered, Sampling {
+export class Timer implements Metered, Sampling {
   private meter: Meter;
   private histogram: Histogram;
 
@@ -85,5 +85,3 @@ class Timer implements Metered, Sampling {
     };
   }
 }
-
-export { TimeContext, Timer };
