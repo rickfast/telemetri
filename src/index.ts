@@ -3,6 +3,8 @@ import { MetricRegistry } from './core/metric-registry';
 // reporters
 import { ConsoleReporter } from './core/console-reporter';
 import { StatsdReporter } from './statsd/statsd-reporter';
+export { SimpleStatsdReporter } from './statsd/simple-statsd-reporter';
+export { StatsdConfig } from './statsd/statsd-config';
 
 // node
 import { gauges } from './node/gauges';
@@ -20,3 +22,5 @@ export {
   MetricRegistry,
   StatsdReporter
 };
+
+export * from './core/time';
