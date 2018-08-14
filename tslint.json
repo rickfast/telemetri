@@ -21,12 +21,13 @@
     "trailing-comma": [
       true,
       {
-        "single": "never",
+        "singleline": "never",
         "multiline": "never"
       }
     ],
     "eofline": true,
     "interface-name": [
+      true,
       "never-prefix"
     ],
     "no-parameter-properties": false,
@@ -72,6 +73,7 @@
       "ignore-arrow-function-shorthand"
     ],
     "member-access": [
+      true,
       "no-public"
     ],
     "max-classes-per-file": [
