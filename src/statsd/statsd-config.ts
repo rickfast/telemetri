@@ -1,7 +1,5 @@
-interface StatsdConfig {
+export interface StatsdConfig {
   host?: string;
   port?: number;
   prefix?: string;
 }
-
-export { StatsdConfig };

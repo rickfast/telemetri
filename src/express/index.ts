@@ -1,0 +1,1 @@
+export { instrumented } from './instrumented';
