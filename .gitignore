@@ -1,4 +1,11 @@
+# Build output
 dist
+
+# Migrated java files
+src/*.java
+
+# IDE files
+.idea
 
 # Logs
 logs
@@ -58,5 +65,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-src/*.java

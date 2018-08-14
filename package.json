@@ -1,6 +1,10 @@
 {
   "name": "telemetri",
   "version": "0.2.3",
+  "repository": "rickfast/telemetri",
+  "bugs": {
+    "url": "https://github.com/rickfast/telemetri/issues"
+  },
   "files": [
     "dist"
   ],
