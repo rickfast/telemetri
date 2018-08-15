@@ -1,19 +1,17 @@
-import { ALL, MetricFilter } from '../core/metric-filter';
-import { MetricRegistry } from '../core/metric-registry';
-import { ScheduledReporter } from '../core/scheduled-reporter';
-
+import * as Statsd from 'statsd-client';
+import { MetricRegistry } from '../core';
 import { Counter } from '../core/counter';
 import { Gauge } from '../core/gauge';
 import { Histogram } from '../core/histogram';
 import { Meter } from '../core/meter';
 import { Metered } from '../core/metered';
+import { ALL, MetricFilter } from '../core/metric-filter';
 import { Metrics } from '../core/metrics';
+import { ScheduledReporter } from '../core/scheduled-reporter';
 import * as timeunit from '../core/time';
 import { Timer } from '../core/timer';
-
 import { StatsdConfig } from './statsd-config';
-
-import * as Statsd from 'statsd-client';
+import { sanitizeName } from './statsd-utils';
 
 const STATSD_HOST_OPTION = 'host';
 const STATSD_PORT_OPTION = 'port';
@@ -21,7 +19,7 @@ const REPORTING_METRIC_PREFIX = 'prefix';
 const STATSD_DEFAULT_HOST = 'localhost';
 const STATSD_DEFAULT_PORT = 8125;
 
-class StatsdReporter extends ScheduledReporter {
+export class StatsdReporter extends ScheduledReporter {
   private statsd: Statsd;
 
   constructor(
@@ -31,13 +29,7 @@ class StatsdReporter extends ScheduledReporter {
     durationUnit: timeunit.TimeUnit,
     config: StatsdConfig
   ) {
-    super(
-      registry,
-      'statsd-reporter',
-      ALL,
-      rateUnit,
-      durationUnit
-    );
+    super(registry, 'statsd-reporter', ALL, rateUnit, durationUnit);
     this.statsd = new Statsd({
       host: config[STATSD_HOST_OPTION] || STATSD_DEFAULT_HOST,
       port: config[STATSD_PORT_OPTION] || STATSD_DEFAULT_PORT,
@@ -52,15 +44,25 @@ class StatsdReporter extends ScheduledReporter {
     meters: Metrics<Meter>,
     timers: Metrics<Timer>
   ): void {
-    Object.keys(gauges).forEach(name => this.reportGauge(name, gauges[name]));
-    Object.keys(counters).forEach(name =>
-      this.reportCounter(name, counters[name])
-    );
-    Object.keys(histograms).forEach(name =>
-      this.reportHistogram(name, histograms[name])
-    );
-    Object.keys(meters).forEach(name => this.reportMetered(name, meters[name]));
-    Object.keys(timers).forEach(name => this.reportTimer(name, timers[name]));
+    Object.keys(gauges)
+      .map(sanitizeName)
+      .forEach(name => this.reportGauge(name, gauges[name]));
+
+    Object.keys(counters)
+      .map(sanitizeName)
+      .forEach(name => this.reportCounter(name, counters[name]));
+
+    Object.keys(histograms)
+      .map(sanitizeName)
+      .forEach(name => this.reportHistogram(name, histograms[name]));
+
+    Object.keys(meters)
+      .map(sanitizeName)
+      .forEach(name => this.reportMetered(name, meters[name]));
+
+    Object.keys(timers)
+      .map(sanitizeName)
+      .forEach(name => this.reportTimer(name, timers[name]));
   }
 
   private reportGauge(name: string, gauge: Gauge<any>): void {
@@ -76,19 +78,19 @@ class StatsdReporter extends ScheduledReporter {
       MetricRegistry.buildName(name, 'count'),
       meter.getCount()
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'm1_rate'),
       this.convertRate(meter.getOneMinuteRate())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'm5_rate'),
       this.convertRate(meter.getFiveMinuteRate())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'm15_rate'),
       this.convertRate(meter.getFifteenMinuteRate())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'mean_rate'),
       this.convertRate(meter.getMeanRate())
     );
@@ -100,45 +102,45 @@ class StatsdReporter extends ScheduledReporter {
       MetricRegistry.buildName(name, 'count'),
       histogram.getCount()
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'max'),
-      snapshot.getMax()
+      this.convertDuration(snapshot.getMax())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'mean'),
-      snapshot.getMean()
+      this.convertDuration(snapshot.getMean())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'min'),
-      snapshot.getMin()
+      this.convertDuration(snapshot.getMin())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'stddev'),
-      snapshot.getStdDev()
+      this.convertDuration(snapshot.getStdDev())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p50'),
-      snapshot.getMedian()
+      this.convertDuration(snapshot.getMedian())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p75'),
-      snapshot.get75thPercentile()
+      this.convertDuration(snapshot.get75thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p95'),
-      snapshot.get95thPercentile()
+      this.convertDuration(snapshot.get95thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p98'),
-      snapshot.get98thPercentile()
+      this.convertDuration(snapshot.get98thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p99'),
-      snapshot.get99thPercentile()
+      this.convertDuration(snapshot.get99thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p999'),
-      snapshot.get999thPercentile()
+      this.convertDuration(snapshot.get999thPercentile())
     );
   }
 
@@ -148,49 +150,47 @@ class StatsdReporter extends ScheduledReporter {
       MetricRegistry.buildName(name, 'count'),
       timer.getCount()
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'max'),
-      snapshot.getMax()
+      this.convertDuration(snapshot.getMax())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'mean'),
-      snapshot.getMean()
+      this.convertDuration(snapshot.getMean())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'min'),
-      snapshot.getMin()
+      this.convertDuration(snapshot.getMin())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'stddev'),
-      snapshot.getStdDev()
+      this.convertDuration(snapshot.getStdDev())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p50'),
-      snapshot.getMedian()
+      this.convertDuration(snapshot.getMedian())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p75'),
-      snapshot.get75thPercentile()
+      this.convertDuration(snapshot.get75thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p95'),
-      snapshot.get95thPercentile()
+      this.convertDuration(snapshot.get95thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p98'),
-      snapshot.get98thPercentile()
+      this.convertDuration(snapshot.get98thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p99'),
-      snapshot.get99thPercentile()
+      this.convertDuration(snapshot.get99thPercentile())
     );
-    this.statsd.timing(
+    this.statsd.gauge(
       MetricRegistry.buildName(name, 'p999'),
-      snapshot.get999thPercentile()
+      this.convertDuration(snapshot.get999thPercentile())
     );
 
     this.reportMetered(name, timer);
   }
 }
-
-export { StatsdReporter };
