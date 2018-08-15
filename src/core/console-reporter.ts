@@ -1,3 +1,4 @@
+import * as prettyjson from 'prettyjson';
 import { Counter } from './counter';
 import { Gauge } from './gauge';
 import { Histogram } from './histogram';
@@ -7,12 +8,10 @@ import { ALL } from './metric-filter';
 import { MetricRegistry } from './metric-registry';
 import { Metrics } from './metrics';
 import { ScheduledReporter } from './scheduled-reporter';
+import * as timeunit from './time';
 import { Timer } from './timer';
 
-import * as prettyjson from 'prettyjson';
-import * as timeunit from './time';
-
-class ConsoleReporter extends ScheduledReporter {
+export class ConsoleReporter extends ScheduledReporter {
   constructor(registry: MetricRegistry, private out: any = console) {
     super(registry, '', ALL, timeunit.seconds, timeunit.seconds);
   }
@@ -45,5 +44,3 @@ class ConsoleReporter extends ScheduledReporter {
     return result;
   }
 }
-
-export { ConsoleReporter };

@@ -2,7 +2,6 @@ language: node_js
 node_js:
 - 8
 script:
--  npm i -g npm@latest
 -  npm run build
 -  npm run test
 deploy:
