@@ -3,7 +3,8 @@ node_js:
 - 8
 script:
 -  npm i -g npm@latest
--  npm run verify
+-  npm run build
+-  npm run test
 deploy:
   on:
     tags: true
