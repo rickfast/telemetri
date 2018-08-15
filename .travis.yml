@@ -2,8 +2,9 @@ language: node_js
 node_js:
 - 8
 script:
--  yarn run build
--  yarn run test
+-  npm i -g npm@latest
+-  npm run build
+-  npm run test
 deploy:
   on:
     tags: true
