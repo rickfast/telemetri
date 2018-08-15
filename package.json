@@ -38,6 +38,7 @@
     "test": "mocha -r ts-node/register test/**/*.ts",
     "pretty": "prettier 'src/**/*.ts' --write",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json --format stylish -e \"test/**\"",
-    "fix": "tslint --config ./tslint.json --project ./tsconfig.json --format stylish --fix"
+    "lint:fix": "yarn lint --fix",
+    "verify": "yarn lint && yarn test && yarn build"
   }
 }
