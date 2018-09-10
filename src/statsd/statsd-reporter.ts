@@ -1,4 +1,4 @@
-import * as Statsd from 'statsd-client';
+import * as StatsdClient from 'statsd-client';
 import { MetricRegistry } from '../core';
 import { Counter } from '../core/counter';
 import { Gauge } from '../core/gauge';
@@ -10,31 +10,20 @@ import { Metrics } from '../core/metrics';
 import { ScheduledReporter } from '../core/scheduled-reporter';
 import * as timeunit from '../core/time';
 import { Timer } from '../core/timer';
-import { StatsdConfig } from './statsd-config';
 import { sanitizeName } from './statsd-utils';
 
-const STATSD_HOST_OPTION = 'host';
-const STATSD_PORT_OPTION = 'port';
-const REPORTING_METRIC_PREFIX = 'prefix';
-const STATSD_DEFAULT_HOST = 'localhost';
-const STATSD_DEFAULT_PORT = 8125;
-
 export class StatsdReporter extends ScheduledReporter {
-  private statsd: Statsd;
+  private statsd: StatsdClient;
 
   constructor(
     registry: MetricRegistry,
     filter: MetricFilter,
     rateUnit: timeunit.TimeUnit,
     durationUnit: timeunit.TimeUnit,
-    config: StatsdConfig
+    statsd: StatsdClient
   ) {
     super(registry, 'statsd-reporter', ALL, rateUnit, durationUnit);
-    this.statsd = new Statsd({
-      host: config[STATSD_HOST_OPTION] || STATSD_DEFAULT_HOST,
-      port: config[STATSD_PORT_OPTION] || STATSD_DEFAULT_PORT,
-      prefix: config[REPORTING_METRIC_PREFIX] || ''
-    });
+    this.statsd = statsd;
   }
 
   report(
@@ -45,24 +34,19 @@ export class StatsdReporter extends ScheduledReporter {
     timers: Metrics<Timer>
   ): void {
     Object.keys(gauges)
-      .map(sanitizeName)
-      .forEach(name => this.reportGauge(name, gauges[name]));
+      .forEach(name => this.reportGauge(sanitizeName(name), gauges[name]));
 
     Object.keys(counters)
-      .map(sanitizeName)
-      .forEach(name => this.reportCounter(name, counters[name]));
+      .forEach(name => this.reportCounter(sanitizeName(name), counters[name]));
 
     Object.keys(histograms)
-      .map(sanitizeName)
-      .forEach(name => this.reportHistogram(name, histograms[name]));
+      .forEach(name => this.reportHistogram(sanitizeName(name), histograms[name]));
 
     Object.keys(meters)
-      .map(sanitizeName)
-      .forEach(name => this.reportMetered(name, meters[name]));
+      .forEach(name => this.reportMetered(sanitizeName(name), meters[name]));
 
     Object.keys(timers)
-      .map(sanitizeName)
-      .forEach(name => this.reportTimer(name, timers[name]));
+      .forEach(name => this.reportTimer(sanitizeName(name), timers[name]));
   }
 
   private reportGauge(name: string, gauge: Gauge<any>): void {
